@@ -314,7 +314,6 @@ def clean_wifi_name(text: str) -> str:
 
 def get_wifi_security() -> str:
     # Tries to find the Wi-Fi security on its own.
-    # Windows works best because netsh shows the authentication type.
 
     system = platform.system().lower()
 
@@ -334,39 +333,6 @@ def get_wifi_security() -> str:
                     return clean_wifi_name(line)
 
             return clean_wifi_name(output)
-
-        elif system == "darwin":
-            # macOS can be annoying for this.
-            # This tries airport, but some Macs hide the command.
-            airport_path = (
-                "/System/Library/PrivateFrameworks/"
-                "Apple80211.framework/Versions/Current/Resources/airport"
-            )
-
-            result = subprocess.run(
-                [airport_path, "-I"],
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
-
-            return clean_wifi_name(result.stdout)
-
-        else:
-            # Linux attempt.
-            # nmcli is common on many Linux installs.
-            result = subprocess.run(
-                ["nmcli", "-t", "-f", "active,security", "dev", "wifi"],
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
-
-            for line in result.stdout.splitlines():
-                if line.startswith("yes:"):
-                    return clean_wifi_name(line)
-
-            return clean_wifi_name(result.stdout)
 
     except Exception:
         return "UNKNOWN"

@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0c29459-71a6-4434-a483-a0ae0ab393df" name="Changes" comment="done">
-      <change beforePath="$PROJECT_DIR$/devices scanner.py" beforeDir="false" afterPath="$PROJECT_DIR$/devices scanner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/network_risk_report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/network_risk_report.txt" afterDir="false" />
-    </list>
+    <list default="true" id="c0c29459-71a6-4434-a483-a0ae0ab393df" name="Changes" comment="actually done" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,12 +107,21 @@
       <option name="project" value="LOCAL" />
       <updated>1780349594345</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="actually done">
+      <option name="closed" value="true" />
+      <created>1780350221486</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1780350221486</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first commit" />
     <MESSAGE value="done" />
-    <option name="LAST_COMMIT_MESSAGE" value="done" />
+    <MESSAGE value="actually done" />
+    <option name="LAST_COMMIT_MESSAGE" value="actually done" />
   </component>
 </project>
