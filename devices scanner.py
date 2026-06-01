@@ -4,6 +4,7 @@ import subprocess
 import platform
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+scan_size = 23
 
 Fun_ports = {
     # Very high priority
@@ -313,26 +314,24 @@ def clean_wifi_name(text: str) -> str:
 
 
 def get_wifi_security() -> str:
-    # Tries to find the Wi-Fi security on its own.
+    # Tries to find the Wi-Fi security
 
-    system = platform.system().lower()
 
     try:
-        if system == "windows":
-            result = subprocess.run(
+        result = subprocess.run(
                 ["netsh", "wlan", "show", "interfaces"],
                 capture_output=True,
                 text=True,
                 timeout=5
-            )
+        )
 
-            output = result.stdout
+        output = result.stdout
 
-            for line in output.splitlines():
-                if "Authentication" in line:
-                    return clean_wifi_name(line)
+        for line in output.splitlines():
+            if "Authentication" in line:
+                return clean_wifi_name(line)
 
-            return clean_wifi_name(output)
+        return clean_wifi_name(output)
 
     except Exception:
         return "UNKNOWN"
@@ -341,12 +340,8 @@ def get_wifi_security() -> str:
 def ping_host(ip: str) -> bool:
     # Return True if host responds to ping
 
-    system = platform.system().lower()
 
-    if system == "windows":
-        cmd = ["ping", "-n", "1", "-w", "500", ip]
-    else:
-        cmd = ["ping", "-c", "1", "-W", "1", ip]
+    cmd = ["ping", "-n", "1", "-w", "500", ip]
 
     try:
         result = subprocess.run(
@@ -369,7 +364,7 @@ def get_local_network() -> str:
         local_ip = s.getsockname()[0]
         s.close()
 
-        network = ipaddress.ip_network(f"{local_ip}/24", strict=False)
+        network = ipaddress.ip_network(f"{local_ip}/{scan_size}", strict=False)
         return str(network)
 
     except Exception:
@@ -454,9 +449,6 @@ def scan_host(ip: str) -> dict:
 def scan_network(network: str):
     # Scan a local network range, such as 192.168.1.0/24.
     net = ipaddress.ip_network(network, strict=False)
-
-    if not net.is_private:
-        raise ValueError("Only scan your own private network.")
 
     hosts = [str(ip) for ip in net.hosts()]
 
@@ -627,7 +619,7 @@ def save_report(devices: list[dict], network_range: str, wifi_security: str):
 
 
 if __name__ == "__main__":
-    print("home network scanner thing")
+    print("home network scanner")
     print("=" * 50)
 
     wifi_security = get_wifi_security()
