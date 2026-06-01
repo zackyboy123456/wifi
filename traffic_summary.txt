@@ -1,0 +1,29 @@
+=== Wi-Fi Lab Traffic Summary ===
+
+Total packets analyzed: 1465
+
+Protocols:
+TCP: 1075 packets (73.4%)
+OTHER: 383 packets (26.1%)
+UDP: 7 packets (0.5%)
+
+Top destinations:
+10.144.69.242 | Unknown | packets: 524
+239.255.255.250 | Unknown | packets: 382
+172.64.155.209 | Unknown | packets: 289
+18.214.78.149 | ec2-18-214-78-149.compute-1.amazonaws.com | packets: 59
+140.82.116.6 | lb-140-82-116-6-sea.github.com | packets: 26
+172.217.12.106 | atl26s14-in-f10.1e100.net | packets: 20
+192.168.1.137 | Zackscomp.lan | packets: 15
+172.212.135.15 | Unknown | packets: 14
+151.101.65.91 | Unknown | packets: 13
+52.104.127.39 | Unknown | packets: 13
+
+Security Observations:
+- TCP traffic detected: active connections were observed.
+- UDP traffic detected: this may include DNS, streaming, or other services.
+- Heavy traffic to 10.144.69.242: 524 packets observed.
+- Heavy traffic to 239.255.255.250: 382 packets observed.
+- Heavy traffic to 172.64.155.209: 289 packets observed.
+- Heavy traffic to 18.214.78.149: 59 packets observed.
+- Reminder: these are basic indicators, not proof of an attack.

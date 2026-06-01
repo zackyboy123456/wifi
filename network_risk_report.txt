@@ -1,0 +1,234 @@
+Home Network Risk Report
+==================================================
+
+network scanned: 192.168.0.0/24
+wifi security: UNKNOWN
+wifi risk: unknown
+wifi note: Not sure what Wi-Fi security is being used.
+
+what this project does:
+- finds devices on a home network
+- checks common ports
+- gives a risk score
+- uses STRIDE to explain the risk
+- compares WEP, WPA, WPA2, and WPA3
+- gives basic fixes
+
+wifi comparison:
+- WEP: very high risk. WEP is really old and should not be used anymore.
+- WPA: high risk. WPA is old too. It is better than WEP, but still not great.
+- WPA2: medium risk. WPA2 is pretty normal. It is okay if your Wi-Fi password is strong.
+- WPA3: low risk. WPA3 is the best common home Wi-Fi option right now.
+
+scan results:
+==================================================
+
+device: 192.168.0.1
+risk score: 13
+risk level: high
+
+open ports:
+- 80: HTTP admin page - check for default password
+- 22: SSH - secure only with strong passwords
+- 443: HTTPS admin page
+- 53: DNS service
+- 1900: SSDP/UPnP discovery
+
+STRIDE stuff:
+- Spoofing
+- Information Disclosure
+- Elevation of Privilege
+- Denial of Service
+
+what i would fix:
+- Check the admin page and change the default password.
+- Use a strong password or turn off SSH if you do not need it.
+- Make sure the admin password is not default.
+- Make sure this is supposed to be running DNS.
+- Turn off UPnP if you do not need it.
+- Check the router settings to see if you are using WPA2 or WPA3.
+
+--------------------------------------------------
+
+device: 192.168.0.100
+risk score: 1
+risk level: low
+
+open ports:
+- nothing cool found
+
+STRIDE stuff:
+- nothing major from the ports checked
+
+what i would fix:
+- Check the router settings to see if you are using WPA2 or WPA3.
+
+--------------------------------------------------
+
+device: 192.168.0.102
+risk score: 19
+risk level: high
+
+open ports:
+- 80: HTTP admin page - check for default password
+- 445: SMB file sharing
+- 443: HTTPS admin page
+- 631: IPP printer service
+- 8080: Alternate HTTP admin page
+- 139: NetBIOS file sharing
+
+STRIDE stuff:
+- Spoofing
+- Information Disclosure
+- Elevation of Privilege
+- Tampering
+
+what i would fix:
+- Check the admin page and change the default password.
+- Turn off file sharing if you do not need it.
+- Make sure the admin password is not default.
+- Update printer firmware and check printer settings.
+- Check the page and change default login info.
+- Turn off old file sharing if not needed.
+- Check the router settings to see if you are using WPA2 or WPA3.
+
+--------------------------------------------------
+
+device: 192.168.0.114
+risk score: 6
+risk level: medium
+
+open ports:
+- 80: HTTP admin page - check for default password
+- 22: SSH - secure only with strong passwords
+
+STRIDE stuff:
+- Spoofing
+- Information Disclosure
+- Elevation of Privilege
+
+what i would fix:
+- Check the admin page and change the default password.
+- Use a strong password or turn off SSH if you do not need it.
+- Check the router settings to see if you are using WPA2 or WPA3.
+
+--------------------------------------------------
+
+device: 192.168.0.139
+risk score: 4
+risk level: low
+
+open ports:
+- 5000: NAS/web admin service
+
+STRIDE stuff:
+- Information Disclosure
+- Elevation of Privilege
+
+what i would fix:
+- Check NAS settings and update it.
+- Check the router settings to see if you are using WPA2 or WPA3.
+
+--------------------------------------------------
+
+device: 192.168.0.159
+risk score: 1
+risk level: low
+
+open ports:
+- nothing cool found
+
+STRIDE stuff:
+- nothing major from the ports checked
+
+what i would fix:
+- Check the router settings to see if you are using WPA2 or WPA3.
+
+--------------------------------------------------
+
+device: 192.168.0.166
+risk score: 1
+risk level: low
+
+open ports:
+- nothing cool found
+
+STRIDE stuff:
+- nothing major from the ports checked
+
+what i would fix:
+- Check the router settings to see if you are using WPA2 or WPA3.
+
+--------------------------------------------------
+
+device: 192.168.0.172
+risk score: 1
+risk level: low
+
+open ports:
+- nothing cool found
+
+STRIDE stuff:
+- nothing major from the ports checked
+
+what i would fix:
+- Check the router settings to see if you are using WPA2 or WPA3.
+
+--------------------------------------------------
+
+device: 192.168.0.177
+risk score: 9
+risk level: medium
+
+open ports:
+- 445: SMB file sharing
+- 139: NetBIOS file sharing
+
+STRIDE stuff:
+- Information Disclosure
+- Tampering
+
+what i would fix:
+- Turn off file sharing if you do not need it.
+- Turn off old file sharing if not needed.
+- Check the router settings to see if you are using WPA2 or WPA3.
+
+--------------------------------------------------
+
+device: 192.168.0.189
+risk score: 10
+risk level: medium
+
+open ports:
+- 554: RTSP camera stream
+- 9000: Web/admin or app service
+- 53: DNS service
+
+STRIDE stuff:
+- Information Disclosure
+- Elevation of Privilege
+- Spoofing
+- Denial of Service
+
+what i would fix:
+- Make sure camera streams are password protected.
+- Check what is running here.
+- Make sure this is supposed to be running DNS.
+- Check the router settings to see if you are using WPA2 or WPA3.
+
+--------------------------------------------------
+
+device: 192.168.0.219
+risk score: 1
+risk level: low
+
+open ports:
+- nothing cool found
+
+STRIDE stuff:
+- nothing major from the ports checked
+
+what i would fix:
+- Check the router settings to see if you are using WPA2 or WPA3.
+
+--------------------------------------------------
