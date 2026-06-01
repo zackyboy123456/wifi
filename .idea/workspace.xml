@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0c29459-71a6-4434-a483-a0ae0ab393df" name="Changes" comment="first commit">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eviltwin.py" beforeDir="false" afterPath="$PROJECT_DIR$/devices scanner.py" afterDir="false" />
+    <list default="true" id="c0c29459-71a6-4434-a483-a0ae0ab393df" name="Changes" comment="done">
+      <change beforePath="$PROJECT_DIR$/devices scanner.py" beforeDir="false" afterPath="$PROJECT_DIR$/devices scanner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network_risk_report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/network_risk_report.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,21 +43,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.device_scan.executor": "Run",
-    "Python.devices scanner.executor": "Run",
-    "Python.packet logger.executor": "Run",
-    "Python.summary.executor": "Run",
-    "Python.testing.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/zhard/PycharmProjects/wifi"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.device_scan.executor&quot;: &quot;Run&quot;,
+    &quot;Python.devices scanner.executor&quot;: &quot;Run&quot;,
+    &quot;Python.packet logger.executor&quot;: &quot;Run&quot;,
+    &quot;Python.summary.executor&quot;: &quot;Run&quot;,
+    &quot;Python.testing.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/zhard/PycharmProjects/wifi&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\zhard\PycharmProjects\wifi" />
@@ -94,11 +94,28 @@
       <option name="project" value="LOCAL" />
       <updated>1779513818733</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="done">
+      <option name="closed" value="true" />
+      <created>1780349415333</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1780349415333</updated>
+    </task>
+    <task id="LOCAL-00004" summary="done">
+      <option name="closed" value="true" />
+      <created>1780349594345</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1780349594345</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="first commit" />
+    <MESSAGE value="done" />
+    <option name="LAST_COMMIT_MESSAGE" value="done" />
   </component>
 </project>

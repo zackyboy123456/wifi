@@ -1,6 +1,7 @@
 import ipaddress
 import socket
 import subprocess
+import platform
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
@@ -291,26 +292,95 @@ wifi_types = {
     "UNKNOWN": {
         "points": 1,
         "risk": "unknown",
-        "info": "Not sure what Wi-Fi security is being used."
+        "info": "Could not figure out what Wi-Fi security is being used."
     }
 }
 
 
-def ask_wifi_type() -> str:
-    print("\nwhat wifi security are you using?")
-    print("options: WEP, WPA, WPA2, WPA3, UNKNOWN")
-    answer = input("type it here: ").strip().upper()
+def clean_wifi_name(text: str) -> str:
+    text = text.upper()
 
-    if answer not in wifi_types:
-        answer = "UNKNOWN"
+    if "WPA3" in text:
+        return "WPA3"
+    if "WPA2" in text:
+        return "WPA2"
+    if "WPA" in text:
+        return "WPA"
+    if "WEP" in text:
+        return "WEP"
 
-    return answer
+    return "UNKNOWN"
+
+
+def get_wifi_security() -> str:
+    # Tries to find the Wi-Fi security on its own.
+    # Windows works best because netsh shows the authentication type.
+
+    system = platform.system().lower()
+
+    try:
+        if system == "windows":
+            result = subprocess.run(
+                ["netsh", "wlan", "show", "interfaces"],
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+
+            output = result.stdout
+
+            for line in output.splitlines():
+                if "Authentication" in line:
+                    return clean_wifi_name(line)
+
+            return clean_wifi_name(output)
+
+        elif system == "darwin":
+            # macOS can be annoying for this.
+            # This tries airport, but some Macs hide the command.
+            airport_path = (
+                "/System/Library/PrivateFrameworks/"
+                "Apple80211.framework/Versions/Current/Resources/airport"
+            )
+
+            result = subprocess.run(
+                [airport_path, "-I"],
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+
+            return clean_wifi_name(result.stdout)
+
+        else:
+            # Linux attempt.
+            # nmcli is common on many Linux installs.
+            result = subprocess.run(
+                ["nmcli", "-t", "-f", "active,security", "dev", "wifi"],
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+
+            for line in result.stdout.splitlines():
+                if line.startswith("yes:"):
+                    return clean_wifi_name(line)
+
+            return clean_wifi_name(result.stdout)
+
+    except Exception:
+        return "UNKNOWN"
 
 
 def ping_host(ip: str) -> bool:
     # Return True if host responds to ping
 
-    cmd = ["ping", "-n", "1", "-w", "500", ip]
+    system = platform.system().lower()
+
+    if system == "windows":
+        cmd = ["ping", "-n", "1", "-w", "500", ip]
+    else:
+        cmd = ["ping", "-c", "1", "-W", "1", ip]
 
     try:
         result = subprocess.run(
@@ -359,7 +429,7 @@ def get_risk_word(score: int) -> str:
         return "low"
 
 
-def think_about_risk(open_ports: list[int], wifi_security: str) -> dict:
+def think_about_risk(open_ports: list[int]) -> dict:
     # This is the risk / STRIDE part for the project
 
     score = 0
@@ -376,21 +446,6 @@ def think_about_risk(open_ports: list[int], wifi_security: str) -> dict:
         if Fun_ports[port]["fix"] not in fixes:
             fixes.append(Fun_ports[port]["fix"])
 
-    score += wifi_types[wifi_security]["points"]
-
-    if wifi_security == "WEP" or wifi_security == "WPA":
-        if "Spoofing" not in stride_stuff:
-            stride_stuff.append("Spoofing")
-        if "Information Disclosure" not in stride_stuff:
-            stride_stuff.append("Information Disclosure")
-        fixes.append("Upgrade Wi-Fi to WPA2 or WPA3.")
-    elif wifi_security == "WPA2":
-        fixes.append("WPA2 is okay, but make sure the Wi-Fi password is strong.")
-    elif wifi_security == "WPA3":
-        fixes.append("WPA3 is good. Keep using it if your devices support it.")
-    else:
-        fixes.append("Check the router settings to see if you are using WPA2 or WPA3.")
-
     return {
         "score": score,
         "word": get_risk_word(score),
@@ -399,7 +454,7 @@ def think_about_risk(open_ports: list[int], wifi_security: str) -> dict:
     }
 
 
-def scan_host(ip: str, wifi_security: str) -> dict:
+def scan_host(ip: str) -> dict:
     # Ping a host and scan selected ports if alive.
     result = {
         "ip": ip,
@@ -420,7 +475,7 @@ def scan_host(ip: str, wifi_security: str) -> dict:
         if check_port(ip, port):
             result["open_ports"].append(port)
 
-    risk = think_about_risk(result["open_ports"], wifi_security)
+    risk = think_about_risk(result["open_ports"])
 
     result["risk_score"] = risk["score"]
     result["risk_word"] = risk["word"]
@@ -430,7 +485,7 @@ def scan_host(ip: str, wifi_security: str) -> dict:
     return result
 
 
-def scan_network(network: str, wifi_security: str):
+def scan_network(network: str):
     # Scan a local network range, such as 192.168.1.0/24.
     net = ipaddress.ip_network(network, strict=False)
 
@@ -446,7 +501,7 @@ def scan_network(network: str, wifi_security: str):
     count = 1
 
     with ThreadPoolExecutor(max_workers=64) as executor:
-        futures = [executor.submit(scan_host, host, wifi_security) for host in hosts]
+        futures = [executor.submit(scan_host, host) for host in hosts]
 
         for future in as_completed(futures):
             result = future.result()
@@ -476,6 +531,11 @@ def print_wifi_stuff(wifi_security: str):
     print("wifi security stuff")
     print("=" * 50)
 
+    print(f"what this computer thinks your wifi is using: {wifi_security}")
+    print(f"risk for that: {wifi_types[wifi_security]['risk']}")
+    print(f"note: {wifi_types[wifi_security]['info']}\n")
+
+    print("comparison:")
     for name in wifi_types:
         if name == "UNKNOWN":
             continue
@@ -487,9 +547,15 @@ def print_wifi_stuff(wifi_security: str):
         print(f"{name}: {wifi_types[name]['risk']} risk{extra}")
         print(f"  {wifi_types[name]['info']}\n")
 
+    print("quick take:")
+    print("  - WEP is bad")
+    print("  - WPA is old")
+    print("  - WPA2 is usually fine with a strong password")
+    print("  - WPA3 is the best option if your router supports it")
+
 
 def print_results(devices: list[dict]):
-    print("=" * 50)
+    print("\n" + "=" * 50)
     print("Summary")
     print("=" * 50)
 
@@ -538,7 +604,7 @@ def save_report(devices: list[dict], network_range: str, wifi_security: str):
         file.write("=" * 50 + "\n\n")
 
         file.write(f"network scanned: {network_range}\n")
-        file.write(f"wifi security: {wifi_security}\n")
+        file.write(f"wifi security found: {wifi_security}\n")
         file.write(f"wifi risk: {wifi_types[wifi_security]['risk']}\n")
         file.write(f"wifi note: {wifi_types[wifi_security]['info']}\n\n")
 
@@ -548,6 +614,7 @@ def save_report(devices: list[dict], network_range: str, wifi_security: str):
         file.write("- gives a risk score\n")
         file.write("- uses STRIDE to explain the risk\n")
         file.write("- compares WEP, WPA, WPA2, and WPA3\n")
+        file.write("- tries to find the wifi security type by itself\n")
         file.write("- gives basic fixes\n\n")
 
         file.write("wifi comparison:\n")
@@ -597,12 +664,13 @@ if __name__ == "__main__":
     print("home network scanner thing")
     print("=" * 50)
 
-    wifi_security = ask_wifi_type()
+    wifi_security = get_wifi_security()
+    print(f"\nwifi security found: {wifi_security}")
 
     network_range = get_local_network()
-    print(f"\nauto detected network: {network_range}\n")
+    print(f"auto detected network: {network_range}\n")
 
-    devices = scan_network(network_range, wifi_security)
+    devices = scan_network(network_range)
 
     print_wifi_stuff(wifi_security)
     print_results(devices)
